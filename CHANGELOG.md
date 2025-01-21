@@ -2,6 +2,11 @@ As documented in the README's [adopting](README.md#how-to-adoptcustomize-the-scr
 
 For those who follow this repo, here's the changelog for ease of adoption:
 
+### 1.1-0
+
+* *[Brewfile]* Replaced `libreoffice` with `onlyoffice`.
+* *[.aliases]* Fixed issue with `start_docker` and `stop_docker`.
+
 ### 1.0-53
 
 * *[Brewfile]* Added `rsync` to be used from homebrew so as to avoid the recently announced RCE vulnerability.

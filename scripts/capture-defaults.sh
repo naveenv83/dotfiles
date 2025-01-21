@@ -58,6 +58,7 @@ ensure_dir_exists "${target_dir}"
 # Note: A simple trick to find these names is to run `\ls -1 ~/Library/Preferences/*` in the command-line
 app_array=(
   'app.zen-browser.zen'
+  'asc.onlyoffice.ONLYOFFICE'
   'ch.protonvpn.mac'
   'com.0804Team.KeyClu'
   'com.abhishek.Clocker'
@@ -351,7 +352,6 @@ app_array=(
   'org.cups.PrintingPrefs'
   'org.kde.KDiff3'
   'org.keepassxc.keepassxc'
-  'org.libreoffice.script'
   'org.mozilla.betterbird'
   'org.mozilla.com.zen.browser'
   'org.mozilla.firefox'

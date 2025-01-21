@@ -74,10 +74,10 @@ cask 'keepassxc@beta'
 cask 'keepingyouawake'
 cask 'keycastr'
 cask 'keyclu' if is_arm
-cask 'libreoffice'
 cask 'monolingual'
 cask 'notunes'
 cask 'ollama', restart_service: :changed
+cask 'onlyoffice'
 cask 'onyx'
 cask 'protonvpn'
 cask 'rancher'
