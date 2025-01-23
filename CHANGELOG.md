@@ -2,7 +2,11 @@ As documented in the README's [adopting](README.md#how-to-adoptcustomize-the-scr
 
 For those who follow this repo, here's the changelog for ease of adoption:
 
-### 1.1-0
+### 1.1-2
+
+* Moved `setup_login_item` function into the `Brewfile` since its used after app-installations.
+
+### 1.1-1
 
 * *[Brewfile]* Replaced `libreoffice` with `onlyoffice`.
 * *[.aliases]* Fixed issue with `start_docker` and `stop_docker`.

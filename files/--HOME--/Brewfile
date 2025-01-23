@@ -140,9 +140,23 @@ end
 
 # ----------------------------------------------------------------------------------------------------------
 # TODO: This doesn't solve the issue about performing a custom action when a specific formula/cask is (re)installed
+# TODO: For some reason, this block is invoked twice when running 'bupc'. Need to investigate why this happens and fix
 at_exit do
   # This removal is required for completions from other plugins to work (for eg git-extras)
   system("rm -rfv \"${HOMEBREW_REPOSITORY}/share/zsh/site-functions/_git\" &> /dev/null 2>&1 || true") || true
+
+  # Setup the login items once the full list of applications has been installed on the machine
+  cmds = "source \"${HOME}/.shellrc\";
+    setup_login_item 'AlDente.app';
+    setup_login_item 'Clocker.app';
+    setup_login_item 'Ice.app';
+    setup_login_item 'KeepingYouAwake.app';
+    setup_login_item 'Keybase.app';
+    setup_login_item 'Raycast.app';
+    setup_login_item 'Stats.app';
+    setup_login_item 'ZoomHider.app';
+    "
+  system(cmds)
 end
 
 # ----------------------------------------------------------------------------------------------------------

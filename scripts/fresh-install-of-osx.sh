@@ -34,16 +34,6 @@ replace_executable_if_exists_and_is_not_symlinked() {
   fi
 }
 
-setup_login_item() {
-  local app_path="/Applications/${1}"
-  if is_directory "${app_path}"; then
-    osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"${app_path}\", hidden:false}" 2>&1 > /dev/null && success "Successfully setup '$(yellow "${1}")' $(green 'as a login item')"
-  else
-    warn "Couldn't find application '${app_path}' and so skipping setting up as a login item"
-  fi
-  unset app_path
-}
-
 build_keybase_repo_url() {
   echo "keybase://private/${KEYBASE_USERNAME}/${1}"
 }
@@ -420,31 +410,11 @@ else
   warn "skipping setting up of cron jobs since 'recron' couldn't be found in the PATH; Please set it up manually"
 fi
 
-#####################
-# Setup login items #
-#####################
-section_header 'Setting up login items'
-app_list=(
-  'AlDente.app'
-  'Clocker.app'
-  'Ice.app'
-  'KeepingYouAwake.app'
-  'Keybase.app'
-  'Raycast.app'
-  'Stats.app'
-  'ZoomHider.app'
-)
-for app in "${app_list[@]}"; do
-  setup_login_item "${app}"
-done
-unset app_list
-
 ###############################
 # Cleanup temp functions, etc #
 ###############################
 unfunction clone_omz_plugin_if_not_present
 unfunction replace_executable_if_exists_and_is_not_symlinked
-unfunction setup_login_item
 unfunction build_keybase_repo_url
 unfunction ensure_safe_load_direnv
 
@@ -480,8 +450,10 @@ unfunction ensure_safe_load_direnv
 # dotnet tool install -g dotnet-format
 
 echo "\n"
-success '** Finished auto installation process: MANUALLY QUIT AND RESTART iTerm2 and Terminal apps **'
-echo "$(yellow "Remember to set the 'RAYCAST_SETTINGS_PASSWORD' env var, and then run the 'capture-raycast-configs.sh' script to import your Raycast configuration into the new machine.")"
+success '** Finished auto installation process: Remember to do the following steps! **'
+echo "$(yellow "1. set the 'RAYCAST_SETTINGS_PASSWORD' env var, and then run the 'capture-raycast-configs.sh' script to import your Raycast configuration into the new machine.")"
+echo "$(yellow "2. Run the 'bupc' alias to finish setting up all other applications managed by homebrew")"
+echo "$(yellow "3. MANUALLY QUIT AND RESTART iTerm2 and Terminal apps")"
 
 script_end_time=$(date +%s)
 echo "==> Script completed at: $(date)"
