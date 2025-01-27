@@ -2,6 +2,13 @@ As documented in the README's [adopting](README.md#how-to-adoptcustomize-the-scr
 
 For those who follow this repo, here's the changelog for ease of adoption:
 
+### 1.1-3
+
+* *[.aliases]* `install_mise_versions` now handles config files from more language-version-managers.
+* *[fresh-install-of-osx.sh]* Removed duplicate function defn: `build_keybase_repo_url`.
+* *[fresh-install-of-osx.sh]* Moved some post-install steps into a new script which is invoked from the Brewfile's `at_exit` block.
+* *[software-updates-cron.sh]* Corrected defensive checking of installed software before running some update commands.
+
 ### 1.1-2
 
 * Moved `setup_login_item` function into the `Brewfile` since its used after app-installations.

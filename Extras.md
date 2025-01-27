@@ -50,6 +50,10 @@ This script is used to cleanup browser profiles folders (delete cache, session a
 
 This script is the erstwhile script to codify the macos setup. It can be used to setup some options, but it hasn't been maintained for newer versions of macos. Though the system will not get corrupted, there might be cruft introduced into the system preferences which might not be easy to identify and remove at a later point in time. Use caution and YMMV.
 
+## post-brew-install.sh
+
+This script is a collection of commands that need to be run after `brew bundle` so as to setup proper command-line usage of some of the gui apps like VSCode, Rancher, etc. This script is also used to setup some applications as login items in the macOS system preferences.
+
 ## recreate-repo.sh
 
 Usually, over time, if a repo has lots of branches that were deleted or became stale, and constant rebases done - it can lead to the repo bloating in size (both on local and remote). This is especially true of the profiles repo in my usage since I have a cron job setup to amend the repo with the new state files. To effectively reduce the size on the remote so that any future clone does not pull down dangling commits and other cruft, the simplest way that I have found is to recreate the remote (this does not mean that the history is lost!) after running the `git cc` command on the local.

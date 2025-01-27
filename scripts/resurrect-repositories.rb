@@ -123,9 +123,7 @@ def resurrect_each(repo, idx, total)
 
   system("#{git_cmd} fetch -q --all --tags")
 
-  Array(repo[POST_CLONE_KEY_NAME]).each do |step|
-    Dir.chdir(folder) { system(step) }
-  end if repo[POST_CLONE_KEY_NAME]
+  Dir.chdir(folder) { system(Array(repo[POST_CLONE_KEY_NAME]).join(';')) } if repo[POST_CLONE_KEY_NAME]
 end
 
 def verify_all(repositories, filter)

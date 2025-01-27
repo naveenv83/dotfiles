@@ -72,9 +72,14 @@ delete_zsh_compilations() {
 }
 
 install_mise_versions() {
-  ! command_exists mise && warn "Couldn't find 'mise' in the PATH; Skipping loading all mise configs" && return
+  ! command_exists mise && warn "Couldn't find 'mise' in the PATH; Skipping loading any mise configs" && return
 
-  find "${HOME}" -name '.tool-versions' -maxdepth 1 -exec echo "===> Installing for {}" \; -execdir mise install \;
+  local config_files=('.java-version' '.ruby-version' '.python-version' '.nvmrc' '.tool-versions')
+  for f in ${config_files}; do
+    find "${HOME}" -name "${f}" -maxdepth 1 -exec echo "===> Installing for {}" \; -execdir mise install \;
+  done
+  unset config_files
+
   is_directory "${PROJECTS_BASE_DIR}" && find "${PROJECTS_BASE_DIR}" -name '.git' -type d -maxdepth 5 -exec echo "===> Installing for {}" \; -execdir mise install \;
 }
 

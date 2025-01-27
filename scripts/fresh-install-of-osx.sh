@@ -25,19 +25,6 @@ clone_omz_plugin_if_not_present() {
   clone_repo_into "${1}" "${ZSH_CUSTOM}/plugins/$(extract_last_segment "${1}")"
 }
 
-replace_executable_if_exists_and_is_not_symlinked() {
-  if is_executable "${1}"; then
-    rm -rf "${2}"
-    ln -sf "${1}" "${2}"
-  else
-    warn "executable '${1}' not found and so skipping symlinking"
-  fi
-}
-
-build_keybase_repo_url() {
-  echo "keybase://private/${KEYBASE_USERNAME}/${1}"
-}
-
 ensure_safe_load_direnv() {
   if [[ "$(pwd)" == "${1}" ]]; then
     pushd ..; popd
@@ -203,60 +190,6 @@ success 'Successfully installed cmd-line and gui apps using homebrew'
 # Note: Load all zsh config files for the 2nd time for PATH and other env vars to take effect (due to defensive programming)
 load_zsh_configs
 
-###########################################
-# Link programs to open from the cmd-line #
-###########################################
-section_header 'Linking keybase for command-line invocation'
-if is_directory '/Applications/Keybase.app'; then
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/Keybase.app/Contents/SharedSupport/bin/keybase' "${HOMEBREW_PREFIX}/bin/keybase"
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/Keybase.app/Contents/SharedSupport/bin/git-remote-keybase' "${HOMEBREW_PREFIX}/bin/git-remote-keybase"
-  success 'Successfully linked keybase into PATH'
-else
-  warn 'skipping symlinking keybase for command-line invocation'
-fi
-
-section_header 'Linking VSCode/VSCodium for command-line invocation'
-if is_directory '/Applications/VSCodium - Insiders.app'; then
-  # Symlink from the embedded executable for codium-insiders
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/VSCodium - Insiders.app/Contents/Resources/app/bin/codium-insiders' "${HOMEBREW_PREFIX}/bin/codium-insiders"
-  # if we are using 'vscodium-insiders' only, symlink it to 'codium' for ease of typing
-  replace_executable_if_exists_and_is_not_symlinked "${HOMEBREW_PREFIX}/bin/codium-insiders" "${HOMEBREW_PREFIX}/bin/codium"
-  # extra: also symlink for 'code'
-  replace_executable_if_exists_and_is_not_symlinked "${HOMEBREW_PREFIX}/bin/codium" "${HOMEBREW_PREFIX}/bin/code"
-  success 'Successfully linked vscodium-insiders into PATH'
-elif is_directory '/Applications/VSCodium.app'; then
-  # Symlink from the embedded executable for codium
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/VSCodium.app/Contents/Resources/app/bin/codium' "${HOMEBREW_PREFIX}/bin/codium"
-  # extra: also symlink for 'code'
-  replace_executable_if_exists_and_is_not_symlinked "${HOMEBREW_PREFIX}/bin/codium" "${HOMEBREW_PREFIX}/bin/code"
-  success 'Successfully linked vscodium into PATH'
-elif is_directory '/Applications/VSCode.app'; then
-  # Symlink from the embedded executable for code
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/VSCode.app/Contents/Resources/app/bin/code' "${HOMEBREW_PREFIX}/bin/code"
-  success 'Successfully linked vscode into PATH'
-else
-  warn 'skipping symlinking vscode/vscodium for command-line invocation'
-fi
-
-section_header 'Linking rider for command-line invocation'
-if is_directory '/Applications/Rider.app'; then
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/Rider.app/Contents/MacOS/rider' "${HOMEBREW_PREFIX}/bin/rider"
-  success 'Successfully linked rider into PATH'
-else
-  warn 'skipping symlinking rider for command-line invocation'
-fi
-
-section_header 'Linking idea/idea-ce for command-line invocation'
-if is_directory '/Applications/IntelliJ IDEA CE.app'; then
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/IntelliJ IDEA CE.app/Contents/MacOS/idea' "${HOMEBREW_PREFIX}/bin/idea"
-  success 'Successfully linked idea-ce into PATH'
-elif is_directory '/Applications/IntelliJ IDEA.app'; then
-  replace_executable_if_exists_and_is_not_symlinked '/Applications/IntelliJ IDEA.app/Contents/MacOS/idea' "${HOMEBREW_PREFIX}/bin/idea"
-  success 'Successfully linked idea into PATH'
-else
-  warn 'skipping symlinking idea/idea-ce for command-line invocation'
-fi
-
 if is_non_zero_string "${KEYBASE_USERNAME}"; then
   ! command_exists keybase && error 'Keybase not found in the PATH. Aborting!!!'
 
@@ -414,8 +347,6 @@ fi
 # Cleanup temp functions, etc #
 ###############################
 unfunction clone_omz_plugin_if_not_present
-unfunction replace_executable_if_exists_and_is_not_symlinked
-unfunction build_keybase_repo_url
 unfunction ensure_safe_load_direnv
 
 # To install the latest versions of the hex, rebar and phoenix packages

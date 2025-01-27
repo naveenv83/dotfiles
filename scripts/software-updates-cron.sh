@@ -2,12 +2,26 @@
 
 # vim:filetype=zsh syntax=zsh tabstop=2 shiftwidth=2 softtabstop=2 expandtab autoindent fileencoding=utf-8
 
+# These are commands that (based on the softwares installed), need to be periodically run to upgrade those softwares.
+# Rather than remembering each tool and its specific command invocation, this script comes handy.
+
 type load_zsh_configs &> /dev/null 2>&1 || source "${HOME}/.shellrc"
 load_zsh_configs
+
+if command_exists bupc; then
+  section_header 'Running brew doctor'
+  brew doctor
+  section_header 'Updating brews'
+  bupc
+  success 'Successfully updated brews'
+else
+  debug 'skipping updating brews & casks'
+fi
 
 if command_exists mise; then
   section_header 'Updating mise'
   mise plugins update
+  # This is typically run only in the ${HOME} folder so as to upgrade the software versions in the "global" sense
   mise upgrade --bump
   mise prune -y
   success 'Successfully updated mise plugins'
@@ -23,7 +37,7 @@ else
   debug 'skipping updating tldr'
 fi
 
-if command_exists git; then
+if command_exists git-ignore-io; then
   section_header 'Updating git-ignore'
   # 'ignore-io' updates the data from http://gitignore.io so that we can generate the '.gitignore' file contents from the cmd-line
   git ignore-io --update-list
@@ -46,14 +60,6 @@ if command_exists omz; then
   success 'Successfully updated oh-my-zsh'
 else
   debug 'skipping updating omz'
-fi
-
-if command_exists brew; then
-  section_header 'Updating brews'
-  bupc
-  success 'Successfully updated brews'
-else
-  debug 'skipping updating brews & casks'
 fi
 
 section_header 'Updating all browser profile chrome folders'
