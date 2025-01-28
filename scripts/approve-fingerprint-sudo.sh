@@ -18,5 +18,5 @@ if ! is_file /etc/pam.d/sudo_local; then
   sudo sh -c 'sed "s/^#auth/auth/" /etc/pam.d/sudo_local.template > /etc/pam.d/sudo_local'
   success 'Created new file: /etc/pam.d/sudo_local'
 else
-  warn "'/etc/pam.d/sudo_local' already present - not creating again"
+  warn "'$(yellow '/etc/pam.d/sudo_local')' is already present - not creating again"
 fi

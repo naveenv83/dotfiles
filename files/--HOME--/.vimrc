@@ -83,3 +83,8 @@ function! <SID>StripTrailingWhitespaces()
   call cursor(l, c)
 endfunction
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+set history=500
+set autoindent
+highlight Search term=bold cterm=bold ctermfg=black ctermbg=green gui=bold guifg=black guibg=green
+highlight ExtraWhitespace ctermbg=LightBlue

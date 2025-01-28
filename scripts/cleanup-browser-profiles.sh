@@ -8,7 +8,7 @@ type is_non_zero_string &> /dev/null 2>&1 || source "${HOME}/.shellrc"
 
 check_app() {
   if is_non_zero_string "$(pgrep "${1}")"; then
-    warn "Shutdown '${1}' first!; skipping processing of files for ${1}"
+    warn "Shutdown '$(yellow "${1}")' first!; skipping processing of files for ${1}"
     return 1
   else
     return 0
@@ -21,7 +21,7 @@ find_and_destroy() {
 
 vacuum_browser_profile_folder() {
   local profile_folder="${2}"
-  ! is_directory "${profile_folder}" && warn "skipping processing of '${profile_folder}' since it doesn't exist" && return
+  ! is_directory "${profile_folder}" && warn "skipping processing of '$(yellow "${profile_folder}")' since it doesn't exist" && return
 
   section_header "Vacuuming '${1}' in '${profile_folder}'..."
   echo "--> Size before: $(folder_size "${profile_folder}")"
@@ -75,7 +75,7 @@ vacuum_browser_profile_folder() {
   unset directory_array
 
   echo "--> Size after: $(folder_size "${profile_folder}")"
-  success "Successfully processed profile folder for '${1}'"
+  success "Successfully processed profile folder for '$(yellow "${1}")'"
   unset profile_folder
 }
 

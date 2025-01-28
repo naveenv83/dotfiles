@@ -202,7 +202,7 @@ command_exists code && alias code-gist='code "${DOTFILES_DIR}" "${PERSONAL_BIN_D
 # updates the specified repo (ie creates a local commit of changed files that I am not interested in verifying, but which need to be committed into that repo)
 # internal function: not to be called separately
 _update_repo() {
-  ! is_git_repo "${1}" && warn "skipping updating the repo since '${1}' doesn't exist or is not a git repo" && return
+  ! is_git_repo "${1}" && warn "skipping updating the repo since '$(yellow "${1}")' doesn't exist or is not a git repo" && return
 
   local folder="$(strip_trailing_slash "${1}")"
 
@@ -229,7 +229,7 @@ update_all_repos() {
 # reports the status for the specified repo
 # internal function: not to be called separately
 _status_repo() {
-  ! is_git_repo "${1}" && warn "skipping finding status of the repo since '${1}' doesn't exist or is not a git repo" && return
+  ! is_git_repo "${1}" && warn "skipping finding status of the repo since '$(yellow "${1}")' doesn't exist or is not a git repo" && return
 
   st "${1}"
 }
@@ -248,7 +248,7 @@ status_all_repos() {
 # counts the number of commits in the specified repo
 # internal function: not to be called separately
 _count_repo() {
-  ! is_git_repo "${1}" && warn "skipping finding count of the repo since '${1}' doesn't exist or is not a git repo" && return
+  ! is_git_repo "${1}" && warn "skipping finding count of the repo since '$(yellow "${1}")' doesn't exist or is not a git repo" && return
 
   count "${1}"
 }
@@ -264,15 +264,15 @@ count_all_repos() {
 # pushes the specified repo (disables and re-enables cron while doing this operation)
 # internal function: not to be called separately
 _push_repo() {
-  ! is_git_repo "${1}" && warn "skipping pushing the repo since '${1}' doesn't exist or is not a git repo" && return
+  ! is_git_repo "${1}" && warn "skipping pushing the repo since '$(yellow "${1}")' doesn't exist or is not a git repo" && return
 
   # shellcheck disable=SC2005
   section_header "Pushing $(yellow "${1}")"
   git -C "${1}" push --force-with-lease
   if [ $? -eq 0 ]; then
-    success "Successfully pushed $(yellow "${1}")"
+    success "Successfully pushed '$(yellow "${1}")'"
   else
-    warn "Couldn't push $(yellow "${1}")"
+    warn "Couldn't push '$(yellow "${1}")'"
   fi
 }
 
@@ -293,7 +293,7 @@ recron() {
   crontab -l
 
   local cron_file="${PERSONAL_CONFIGS_DIR}/crontab.txt"
-  ! is_file "${cron_file}" && warn "No '${cron_file} found; returning without any processing" && return
+  ! is_file "${cron_file}" && warn "No '$(yellow "${cron_file}")' found; returning without any processing" && return
 
   # shellcheck disable=SC2005
   echo "$(red "---------------------------------------------------------------------------")"

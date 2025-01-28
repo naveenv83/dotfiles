@@ -22,7 +22,7 @@ local upstream_repo_owner="${2}"
 
 section_header "Adding new upstream to: '$(yellow "${target_folder}")'"
 
-! is_git_repo "${target_folder}" && warn "'${target_folder}' is not a git repo; Aborting!!!" && return
+! is_git_repo "${target_folder}" && warn "'$(yellow "${target_folder}")' is not a git repo; Aborting!!!" && return
 
 git -C "${target_folder}" remote -vv | \grep "${upstream_repo_owner}"
 if [ $? -eq 0 ]; then

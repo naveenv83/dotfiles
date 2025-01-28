@@ -153,20 +153,20 @@ yellow() {
 }
 
 warn() {
-  echo "$(yellow "**WARN** ${1}")"
+  echo "$(yellow '**WARN**') ${1}"
 }
 
 success() {
-  echo "$(green "**SUCCESS** ${1}")"
+  echo "$(green '**SUCCESS**') ${1}"
 }
 
 debug() {
-  warn "${1}"
+  echo "$(pink '**DEBUG**') ${1}"
   echo "${PATH}"
 }
 
 error() {
-  echo "$(red "${1}")"
+  echo "$(red '**ERROR**') ${1}"
   exit 1
 }
 
@@ -209,7 +209,7 @@ ensure_dir_exists() {
   if is_non_zero_string "${1}"; then
     mkdir -pv "${1}"
   else
-    warn "Skipping creation of the directory since '${1}' is not defined"
+    warn "Skipping creation of the directory since '$(yellow "${1}")' is not defined"
   fi
 }
 
@@ -317,7 +317,7 @@ clone_repo_into() {
     unset tmp_folder
     unset target_branch
   else
-    warn "Skipping cloning of '${1}' since '${target_folder}' is already a git repo"
+    warn "Skipping cloning of '$(yellow "${1}")' since '$(yellow "${target_folder}")' is already a git repo"
   fi
   unset target_folder
 }
@@ -327,9 +327,9 @@ set_ssh_folder_permissions() {
   ensure_dir_exists "${target_folder}"
   if dir_has_children "${target_folder}"; then
     chmod -R 600 "${target_folder}"/*
-    success "Successfully set permissions for all files in '${target_folder}'"
+    success "Successfully set permissions for all files in '$(yellow "${target_folder}")'"
   else
-    warn "Couldn't find any files in '${target_folder}' to set permissions for"
+    warn "Couldn't find any files in '$(yellow "${target_folder}")' to set permissions for"
   fi
   unset target_folder
 }

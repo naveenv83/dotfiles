@@ -10,9 +10,9 @@ setup_login_item() {
   # TODO: Check if its possible to not run if the app is already present in the login items list
   local app_path="/Applications/${1}"
   if is_directory "${app_path}"; then
-    osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"${app_path}\", hidden:false}" 2>&1 > /dev/null && success "Successfully setup '$(yellow "${1}")' $(green 'as a login item')"
+    osascript -e "tell application \"System Events\" to make login item at end with properties {path:\"${app_path}\", hidden:false}" 2>&1 > /dev/null && success "Successfully setup '$(yellow "${1}")' as a login item"
   else
-    warn "Couldn't find application '${app_path}' and so skipping setting up as a login item"
+    warn "Couldn't find application '$(yellow "${app_path}")' and so skipping setting up as a login item"
   fi
   unset app_path
 }
@@ -24,7 +24,7 @@ replace_executable_if_exists_and_is_not_symlinked() {
     rm -rf "${2}"
     ln -sf "${1}" "${2}"
   else
-    warn "executable '${1}' not found and so skipping symlinking"
+    warn "executable '$(yellow "${1}")' not found and so skipping symlinking"
   fi
 }
 

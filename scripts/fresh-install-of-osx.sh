@@ -31,7 +31,7 @@ ensure_safe_load_direnv() {
   else
     pushd "${1}"; pushd ..; popd; popd
   fi
-  success "Successfully allowed 'direnv' config for '${1}'"
+  success "Successfully allowed 'direnv' config for '$(yellow "${1}")'"
 }
 
 ######################################################################################################################
@@ -50,7 +50,7 @@ if ! type warn &> /dev/null 2>&1; then
   ! test -f "${HOME}/.shellrc" && curl -fsSL "https://raw.githubusercontent.com/${GH_USERNAME}/dotfiles/refs/heads/${DOTFILES_BRANCH}/files/--HOME--/.shellrc" -o "${HOME}/.shellrc"
   FIRST_INSTALL=true source "${HOME}/.shellrc"
 else
-  warn "skipping downloading and sourcing '${HOME}/.shellrc' since its already loaded"
+  warn "skipping downloading and sourcing '$(yellow "${HOME}/.shellrc")' since its already loaded"
 fi
 
 ###############################################################################################
@@ -119,7 +119,7 @@ if ! is_directory "${HOME}/.oh-my-zsh"; then
   sh -c "$(ZSH= curl -fsSL https://install.ohmyz.sh/)" "" --unattended
   success "Successfully installed oh-my-zsh into '$(yellow "${HOME}/.oh-my-zsh")'"
 else
-  warn "skipping installation of oh-my-zsh since '${HOME}/.oh-my-zsh' is already present"
+  warn "skipping installation of oh-my-zsh since '$(yellow "${HOME}/.oh-my-zsh")' is already present"
 fi
 
 ##############################
@@ -157,7 +157,7 @@ if is_non_zero_string "${DOTFILES_DIR}" && ! is_git_repo "${DOTFILES_DIR}"; then
   # Setup the DOTFILES_DIR repo's upstream if it doesn't already point to UPSTREAM_GH_USERNAME's repo
   add-upstream-git-config.sh "${DOTFILES_DIR}" "${UPSTREAM_GH_USERNAME}"
 else
-  warn "skipping cloning the dotfiles repo since '${DOTFILES_DIR}' is either not defined or is already a git repo"
+  warn "skipping cloning the dotfiles repo since '$(yellow "${DOTFILES_DIR}")' is either not defined or is already a git repo"
 fi
 
 ! is_non_zero_string "${HOMEBREW_PREFIX}" && error "'HOMEBREW_PREFIX' env var is not set; something is wrong. Please correct before retrying!"
@@ -180,7 +180,7 @@ if ! command_exists brew; then
 
   eval "$(${HOMEBREW_PREFIX}/bin/brew shellenv)"
 else
-  warn "skipping installation of homebrew since it's already installed"
+  warn "skipping installation of $(yellow 'homebrew') since it's already installed"
 fi
 # TODO: Need to investigate why this step exits on a vanilla OS's first run of this script
 # Note: Do not set the 'HOMEBREW_BASE_INSTALL' in this script - since its supposed to run idempotently. Also, don't run the cleanup of pre-installed brews/casks (for the same reason)
@@ -212,7 +212,7 @@ if is_non_zero_string "${KEYBASE_USERNAME}"; then
     # Fix /etc/hosts file to block facebook
     is_file "${PERSONAL_CONFIGS_DIR}/etc.hosts" && sudo cp "${PERSONAL_CONFIGS_DIR}/etc.hosts" /etc/hosts
   else
-    warn "skipping cloning of home repo since the 'KEYBASE_HOME_REPO_NAME' env var hasn't been set"
+    warn "skipping cloning of home repo since the '$(yellow 'KEYBASE_HOME_REPO_NAME')' env var hasn't been set"
   fi
 
   ###########################
@@ -227,7 +227,7 @@ if is_non_zero_string "${KEYBASE_USERNAME}"; then
     if is_directory "${folder}"; then
       clone_repo_into "git@github.com:${UPSTREAM_GH_USERNAME}/natsumi-browser" "${folder}/Profiles/DefaultProfile/chrome" dev
     else
-      warn "skipping cloning of natsumi repo into the zen chrome folder since the folder doesn't exist: '${folder}/Profiles'"
+      warn "skipping cloning of natsumi repo into the zen chrome folder since the folder '$(yellow "${folder}/Profiles")' doesn't exist"
     fi
     unset folder
 
@@ -237,10 +237,10 @@ if is_non_zero_string "${KEYBASE_USERNAME}"; then
     done
     unset folder
   else
-    warn "skipping cloning of profiles repo since either the 'KEYBASE_PROFILES_REPO_NAME' or the 'PERSONAL_PROFILES_DIR' env var hasn't been set"
+    warn "skipping cloning of profiles repo since either the '$(yellow 'KEYBASE_PROFILES_REPO_NAME')' or the '$(yellow 'PERSONAL_PROFILES_DIR')' env var hasn't been set"
   fi
 else
-  warn "skipping cloning of any keybase repo since 'KEYBASE_USERNAME' has not been set"
+  warn "skipping cloning of any keybase repo since '$(yellow 'KEYBASE_USERNAME')' has not been set"
 fi
 
 if is_non_zero_string "${PERSONAL_CONFIGS_DIR}"; then
@@ -256,9 +256,9 @@ if is_non_zero_string "${PERSONAL_CONFIGS_DIR}"; then
   remote: git@github.com:${UPSTREAM_GH_USERNAME}/git_scripts
   active: true
 EOF
-    success "Successfully generated ${file_name}"
+    success "Successfully generated '$(yellow "${file_name}")'"
   else
-    warn "skipping generation of '${file_name}' since it already exists"
+    warn "skipping generation of '$(yellow "${file_name}")' since it already exists"
   fi
   unset file_name
 
@@ -272,7 +272,7 @@ EOF
   unset file
   success 'Successfully resurrected all tracked git repos'
 else
-  warn "skipping resurrecting of repositories since '${PERSONAL_CONFIGS_DIR}' doesn't exist"
+  warn "skipping resurrecting of repositories since '$(yellow "${PERSONAL_CONFIGS_DIR}")' doesn't exist"
 fi
 
 ############################################################
@@ -287,13 +287,13 @@ fi
 if command_exists allow_all_direnv_configs; then
   allow_all_direnv_configs
 else
-  warn "skipping registering all direnv configs since 'allow_all_direnv_configs' couldn't be found in the PATH; Please run it manually"
+  warn "skipping registering all direnv configs since '$(yellow 'allow_all_direnv_configs')' couldn't be found in the PATH; Please run it manually"
 fi
 
 if command_exists install_mise_versions; then
   install_mise_versions
 else
-  warn "skipping installation of languages since 'install_mise_versions' couldn't be found in the PATH; Please run it manually"
+  warn "skipping installation of languages since '$(yellow 'install_mise_versions')' couldn't be found in the PATH; Please run it manually"
 fi
 rm -rf "${HOME}/.ssh/known_hosts.old"
 
@@ -315,14 +315,14 @@ if command_exists 'osx-defaults.sh'; then
   osx-defaults.sh -s
   success 'Successfully baselines preferences'
 else
-  warn "skipping baselining of preferences since 'osx-defaults.sh' couldn't be found in the PATH; Please baseline manually and follow it up with re-import of the backed-up preferences"
+  warn "skipping baselining of preferences since '$(yellow 'osx-defaults.sh')' couldn't be found in the PATH; Please baseline manually and follow it up with re-import of the backed-up preferences"
 fi
 
 if command_exists 'capture-defaults.sh'; then
   capture-defaults.sh i
   success 'Successfully restored preferences from backup'
 else
-  warn "skipping importing of preferences since 'capture-defaults.sh' couldn't be found in the PATH; Please set it up manually"
+  warn "skipping importing of preferences since '$(yellow 'capture-defaults.sh')' couldn't be found in the PATH; Please set it up manually"
 fi
 
 ################################
@@ -340,7 +340,7 @@ if command_exists recron; then
   recron
   success 'Successfully setup cron jobs'
 else
-  warn "skipping setting up of cron jobs since 'recron' couldn't be found in the PATH; Please set it up manually"
+  warn "skipping setting up of cron jobs since '$(yellow 'recron')' couldn't be found in the PATH; Please set it up manually"
 fi
 
 ###############################

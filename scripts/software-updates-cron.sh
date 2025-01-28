@@ -66,9 +66,9 @@ section_header 'Updating all browser profile chrome folders'
 for folder in "${PERSONAL_PROFILES_DIR}"/*Profile/Profiles/DefaultProfile/chrome; do
   if is_git_repo "${folder}"; then
     git -C "${folder}" pull -r
-    success "Successfully updated natsumi-browser into the folder: '${folder}'"
+    success "Successfully updated natsumi-browser into the folder: '$(yellow "${folder}")'"
   else
-    debug "skipping updating '${folder}' since it's not a git repo"
+    debug "skipping updating '$(yellow "${folder}")' since it's not a git repo"
   fi
 done
 unset folder

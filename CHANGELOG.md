@@ -2,6 +2,10 @@ As documented in the README's [adopting](README.md#how-to-adoptcustomize-the-scr
 
 For those who follow this repo, here's the changelog for ease of adoption:
 
+### 1.1-4
+
+* Simplify color output for scripts (avoid nesting) within the same line.
+
 ### 1.1-3
 
 * *[.aliases]* `install_mise_versions` now handles config files from more language-version-managers.
